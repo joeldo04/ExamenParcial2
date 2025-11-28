@@ -23,11 +23,11 @@ val estudiantes: List[Estudiante] = List(
   Estudiante("Natalia",   List(8.0, 8.1, 8.2, 8.0, 8.1)),
   Estudiante("Sebastián", List(7.8, 8.0, 8.2, 7.9, 8.1))
 )
+case class Consistencia(nombre: String, consistencia: Double)
 
-val estudiantes3Notas = estudiantes.filter(_.notas.length >= 3)
+def obtenerMasConsistente(est: List[Estudiante]) =
+  val validos = est.filter(e => e.notas.size >= 3)
+  val consistencias = validos.map(e => Consistencia(e.nombre, e.notas.max - e.notas.min))
+  consistencias.minByOption(_.consistencia)
 
-val consistencias = estudiantes3Notas.map(e => (e.nombre, e.notas.max - e.notas.min))
-
-val menosConsistente = consistencias.minBy(_._2)
-
-val masConsistente = consistencias.maxBy(_._2)
+val resultado = obtenerMasConsistente(estudiantes)
