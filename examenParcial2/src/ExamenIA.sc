@@ -24,10 +24,25 @@ val estudiantes: List[Estudiante] = List(
   Estudiante("Sebastián", List(7.8, 8.0, 8.2, 7.9, 8.1))
 )
 
-val estudiantes3Notas = estudiantes.filter(_.notas.length >= 3)
+// 1. Filtrar estudiantes con menos de 3 notas (Igual que tu código)
+val estudiantesValidos = estudiantes.filter(_.notas.length >= 3)
 
-val consistencias = estudiantes3Notas.map(e => (e.nombre, e.notas.max - e.notas.min))
+// 2. Definir una función auxiliar simple para calcular la consistencia
+// Esto hace el código más limpio y funcional
+def calcularConsistencia(notas: List[Double]): Double = notas.max - notas.min
 
-val menosConsistente = consistencias.minBy(_._2) // Obtiene al de menor variación (Mejor consistencia)
+// 3. Encontrar al más consistente usando REDUCE
+// Comparamos el acumulado (acc) contra el actual (curr). 
+// Si la consistencia de 'curr' es MENOR (<), él pasa a ser el nuevo mejor.
+val estudianteMasConsistente = estudiantesValidos.reduce((mejorActual, nuevoCandidato) => {
+  if (calcularConsistencia(nuevoCandidato.notas) < calcularConsistencia(mejorActual.notas))
+    nuevoCandidato
+  else
+    mejorActual
+})
 
-val masConsistente = consistencias.maxBy(_._2)  // Obtiene al de mayor variación (Peor consistencia)
+// 4. Mostrar el resultado final
+val valorConsistencia = calcularConsistencia(estudianteMasConsistente.notas)
+
+println(s"Estudiante: ${estudianteMasConsistente.nombre}")
+println(s"Consistencia: $valorConsistencia")
